@@ -17,11 +17,12 @@ using std::string;
 
 typedef struct TST {
     char c;
+    bool isCapital;
     TST *left;
     TST *mid;
     TST *right;
     bool isWord;
-    TST() : isWord(false), left(nullptr), right(nullptr), mid(nullptr) {}
+    TST() : isWord(false), left(nullptr), right(nullptr), mid(nullptr), isCapital(false) {}
 } TST;
 
 TST * insert (TST * head, const char * word) {
@@ -29,6 +30,9 @@ TST * insert (TST * head, const char * word) {
         if (word && *word) {
             head = new TST();
             head->c = *word;
+            if(*word >= 65 && *word <= 90) {
+                head->isCapital = true;
+            }
             head->mid = insert(head->mid, ++word);
             if (head->mid == nullptr) {
                 head->isWord = true;

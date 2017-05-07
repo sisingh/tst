@@ -1,2 +1,2 @@
 # tst
-TST for incremental search
+Ternary Search Tree (TST) data structure for incremental search.

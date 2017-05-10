@@ -65,21 +65,25 @@ void sortedOut(TST * head, const char * prefix) {
 }
 
 /* TODO with prefix */
-TST * getHeadForPrefix (TST * head, const char * prefix) {
+TST * getHeadForPrefix (TST * head, const char * prefix, TST *& temp) {
     if (prefix && *prefix) {
         if (tolower(*prefix) < tolower(head->c)) {
-            head->left = getHeadForPrefix(head->left, prefix);
+            head->left = getHeadForPrefix(head->left, prefix, temp);
         } else if (tolower(*prefix) > tolower(head->c)) {
-            head->right = getHeadForPrefix(head->right, prefix);
+            head->right = getHeadForPrefix(head->right, prefix, temp);
         } else {
-            head->mid = getHeadForPrefix(head->mid, ++prefix);
+            if (*(prefix+1) == '\0') {
+                temp = head;
+            }
+            head->mid = getHeadForPrefix(head->mid, ++prefix, temp);
         }
     }
     return head;
 }
 
 TST * sortedOutWithPrefix(TST * head, const char * prefix) {
-    TST * temp = getHeadForPrefix(head, prefix);
+    TST * temp = new TST();
+    getHeadForPrefix(head, prefix, temp);
     if (temp != nullptr) {
         sortedOut(temp->mid, prefix);
     }
@@ -91,15 +95,20 @@ TST * sortedOutWithPrefix(TST * head, const char * prefix) {
 int main(int argc, const char * argv[], const char ** arge) try {
     cout << "Hello, World!\n";
     TST * head = nullptr;
-    head = insert(head, (char*)(""));
+    head = insert(head, (char*)("Sigh"));
     head = insert(head, (char*)("how"));
     head = insert(head, (char*)("Hello"));
     head = insert(head, (char*)("Sid"));
     head = insert(head, (char*)("Hem"));
+    head = insert(head, (char*)("swallow"));
+    head = insert(head, (char*)("zebra"));
+    head = insert(head, (char*)("wtf"));
+    head = insert(head, (char*)("kurbani"));
+    head = insert(head, (char*)("lekar"));
     sortedOut(head, nullptr);
-    string prefix("H");
+    string prefix("S");
     cout << endl << "Search with a prefix '" << prefix << "' now " << endl << endl;
-    sortedOutWithPrefix(head, "H");
+    sortedOutWithPrefix(head, prefix.c_str());
     return 0;
     } catch(...) {
         cerr << "Uncaught exception..." << endl;
